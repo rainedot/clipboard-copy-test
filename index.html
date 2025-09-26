@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script>
+  const text = 'Hello, world!';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.querySelector('button');
+    button.addEventListener('click', () => {
+      try {
+        navigator.clipboard.writeText(text);
+        alert('Copied to clipboard navigator.clipboard.writeText');
+      } catch (error) {
+        alert('fallback')
+
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const result = document.execCommand('copy');
+        if(!result) {
+          throw new Error('Failed to copy text');
+        }
+        document.body.removeChild(textArea);
+        alert('Copied to clipboard document.execCommand');
+      }
+    });
+  });
+</script>
+<body>
+  <button>Copy</button>
+</body>
+</html>
